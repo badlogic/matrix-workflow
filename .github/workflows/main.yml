@@ -11,8 +11,8 @@ on:
         type: string
 
 env:
-  GODOT_TAG: $${ inputs.godot_tag }}
-  GODOT_VERSION: $${ inputs.godot_version }}
+  GODOT_TAG: ${{ inputs.godot_tag }}
+  GODOT_VERSION: ${{ inputs.godot_version }}
 
 jobs:
   godot-editor-windows:
