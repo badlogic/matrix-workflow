@@ -1,8 +1,18 @@
 name: Build and Publish Godot 4.0 editor and templates
 
 on:
-  push:
-  workflow_dispatch:
+  workflow_call:
+    inputs:
+      godot_tag:
+        required: true
+        type: string
+      godot_version:
+        required: true
+        type: string
+
+env:
+  GODOT_TAG: $${ inputs.godot_tag }}
+  GODOT_VERSION: $${ inputs.godot_version }}
 
 jobs:
   godot-editor-windows:
