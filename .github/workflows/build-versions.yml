@@ -11,9 +11,9 @@ jobs:
           [
             {"tag": "4.0-stable", "version": "4.0.stable"},
             {"tag": "4.1-stable", "version": "4.1.stable"},
-          ]
+          ]    
     uses: ./.github/workflows/main.yml
     with:
-      - godot_tag: ${{ matrix.version.tag }}
-      - godot_version: ${{ matrix.version.version }}
+      godot_tag: ${{ matrix.version.tag }}
+      godot_version: ${{ matrix.version.version }} }
     secrets: inherit
