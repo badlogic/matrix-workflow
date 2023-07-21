@@ -80,7 +80,6 @@ jobs:
 
       - name: Upload artifacts to S3
         shell: bash
-        if: env.AWS_ACCESS_KEY_ID != null
         run: |
           cat windows.txt
           cat linux.txt
