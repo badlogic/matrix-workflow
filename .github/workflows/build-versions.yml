@@ -1,0 +1,19 @@
+name: Build all Godot versions
+
+on:
+  push:
+  
+jobs:
+  build-versions:
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - tag: "4.0-stable"
+            version: "4.0.stable"
+          - tag: "4.1-stable"
+            version: "4.1.stable"
+    uses: ./.github/workflows/main.yml
+    with:
+      version: ${{ matrix.version }}
+    secrets: inherit
