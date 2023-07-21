@@ -1,0 +1,89 @@
+name: Build and Publish Godot 4.0 editor and templates
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  godot-editor-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Build Godot artifact
+        shell: bash
+        run: |
+          echo "$GODOT_TAG, $GODOT_VERSION" >> windows.txt
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: godot-editor-windows.zip
+          path: windows.txt
+          
+  godot-editor-linux:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Build Godot artifact
+        shell: bash
+        run: |
+          echo "$GODOT_TAG, $GODOT_VERSION" >> linux.txt
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: godot-editor-linux.zip
+          path: linux.txt
+
+  godot-editor-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Build Godot artifact
+        shell: bash
+        run: |
+          echo "$GODOT_TAG, $GODOT_VERSION" >> macos.txt
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: godot-editor-macos.zip
+          path: macos.txt
+  
+  upload-to-s3:
+    needs: [godot-editor-windows, godot-editor-linux, godot-editor-macos]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download godot-editor-windows artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: godot-editor-windows.zip
+
+      - name: Download godot-editor-linux artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: godot-editor-linux.zip
+
+      - name: Download godot-editor-macos artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: godot-editor-macos.zip
+
+      - name: Upload artifacts to S3
+        shell: bash
+        if: env.AWS_ACCESS_KEY_ID != null
+        run: |
+          cat windows.txt
+          cat linux.txt
+          cat macos.txt
+
+
